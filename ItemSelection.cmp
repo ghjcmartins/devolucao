@@ -1,0 +1,49 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId">
+    <!-- Definir atributos -->
+    <aura:attribute name="items" type="List" />
+    <aura:attribute name="selectedItems" type="List" default="[]" />
+    <aura:attribute name="reasonOptions" type="List" default="['Defeito', 'Troca', 'Outro']" />
+    <aura:attribute name="selectedReason" type="String" />
+    <aura:attribute name="additionalDescription" type="String" />
+    <aura:attribute name="confirmationView" type="Boolean" default="false" />
+
+    <!-- Ação de inicialização -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <!-- Exibir a lista de itens -->
+    <aura:iteration items="{!v.items}" var="item">
+        <div>
+            <lightning:input type="checkbox" label="{!item.Name}" value="{!item.Id}" onchange="{!c.handleCheckboxChange}" />
+            <lightning:input type="number" label="Quantidade" value="1" min="1" max="{!item.Quantity__c}" />
+        </div>
+    </aura:iteration>
+
+    <!-- Selecionar motivo e adicionar descrição -->
+    <lightning:select name="reason" label="Motivo" aura:id="reasonField" onchange="{!c.handleReasonChange}">
+        <aura:iteration items="{!v.reasonOptions}" var="reason">
+            <option value="{!reason}">{!reason}</option>
+        </aura:iteration>
+    </lightning:select>
+
+    <lightning:textarea label="Descrição Adicional" value="{!v.additionalDescription}" />
+
+    <!-- Visualização resumida e botão de confirmação -->
+    <aura:if isTrue="{!v.confirmationView}">
+        <div>
+            <p>Itens a serem devolvidos:</p>
+            <ul>
+                <aura:iteration items="{!v.selectedItems}" var="itemId">
+                    <li>{!itemId}</li>
+                </aura:iteration>
+            </ul>
+            <p>Motivo: {!v.selectedReason}</p>
+            <p>Descrição Adicional: {!v.additionalDescription}</p>
+            <lightning:button label="Confirmar Devolução" onclick="{!c.confirmReturn}" />
+        </div>
+    </aura:if>
+
+    <!-- Botão de Alternar Visualização -->
+    <aura:if isTrue="{!not(v.confirmationView)}">
+        <lightning:button label="Visualizar Resumo" onclick="{!c.toggleConfirmationView}" />
+    </aura:if>
+</aura:component>

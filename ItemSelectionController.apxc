@@ -1,0 +1,23 @@
+public class ItemSelectionController {
+    @AuraEnabled(cacheable=true)
+    public static List<Item__c> getItems() {
+        // Lógica para buscar itens do pedido (substitua pela sua lógica real)
+        // Exemplo fictício:
+        return [SELECT Id, Name, Quantity__c FROM Item__c LIMIT 5];
+    }
+
+    @AuraEnabled
+    public static void createDevolucao(List<String> selectedItems, String selectedReason, String additionalDescription) {
+        // Lógica para criar objetos de devolução e itens de devolução
+        // Substitua pelos seus objetos e campos reais
+        List<Devolucao__c> devolucoes = new List<Devolucao__c>();
+        List<ItemDevolucao__c> itensDevolucao = new List<ItemDevolucao__c>();
+
+        // Lógica para criar e relacionar objetos de devolução e itens de devolução
+        // ...
+
+        // Insira os registros no Salesforce
+        insert devolucoes;
+        insert itensDevolucao;
+    }
+}
